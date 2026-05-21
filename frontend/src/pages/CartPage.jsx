@@ -67,7 +67,7 @@ export default function CartPage({ onCheckout }) {
   return (
     <div className="min-h-screen bg-white">
       <div
-        className="bg-[#0b2240] py-10 px-6 relative overflow-hidden"
+        className="relative overflow-hidden bg-[#0b2240] px-6 py-10"
         style={{
           backgroundImage:
             "linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px)",
@@ -75,16 +75,16 @@ export default function CartPage({ onCheckout }) {
         }}
       >
         <div className="absolute left-0 top-0 h-1 w-16 bg-[#ff5700]" />
-        <div className="max-w-7xl mx-auto">
+        <div className="mx-auto max-w-7xl">
           <button
             onClick={() => navigate("/market")}
-            className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors mb-4 group"
+            className="group mb-4 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-colors hover:text-white"
           >
-            <ArrowLeft size={11} className="group-hover:-translate-x-0.5 transition-transform" />
+            <ArrowLeft size={11} className="transition-transform group-hover:-translate-x-0.5" />
             Continue Shopping
           </button>
           <div className="flex items-end gap-4">
-            <h1 className="text-4xl md:text-6xl font-black uppercase leading-[0.9] tracking-tighter text-white">
+            <h1 className="font-black uppercase leading-[0.9] tracking-tighter text-white text-4xl md:text-6xl">
               Your<br />
               <span className="text-[#3b82f6]">Bag.</span>
             </h1>
@@ -96,14 +96,14 @@ export default function CartPage({ onCheckout }) {
       </div>
 
       {toFreeShip > 0 && (
-        <div className="bg-[#f0f4ff] border-b border-[#3b82f6]/20 px-6 py-3">
-          <div className="max-w-7xl mx-auto flex items-center gap-3">
+        <div className="border-b border-[#3b82f6]/20 bg-[#f0f4ff] px-6 py-3">
+          <div className="mx-auto flex max-w-7xl items-center gap-3">
             <p className="text-[10px] font-black uppercase tracking-widest text-[#0b2240]">
               Add <span className="text-[#ff5700]">${toFreeShip.toFixed(2)}</span> more for free shipping
             </p>
-            <div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+            <div className="h-1.5 flex-1 rounded-full bg-slate-200 overflow-hidden">
               <div
-                className="h-full bg-[#3b82f6] rounded-full transition-all duration-500"
+                className="h-full rounded-full bg-[#3b82f6] transition-all duration-500"
                 style={{ width: `${Math.min(100, ((subtotal - discount) / FREE_SHIPPING_THRESHOLD) * 100)}%` }}
               />
             </div>
@@ -111,12 +111,12 @@ export default function CartPage({ onCheckout }) {
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col lg:flex-row gap-10 items-start">
+      <div className="mx-auto max-w-7xl flex flex-col lg:flex-row gap-10 items-start px-6 py-10">
         <div className="flex-1 min-w-0 flex flex-col gap-4">
           <div className="hidden md:grid grid-cols-[1fr_auto_auto] gap-6 pb-2 border-b border-slate-100">
             <span className="text-[9px] font-black uppercase tracking-widest text-slate-400">Item</span>
-            <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 w-24 text-center">Qty</span>
-            <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 w-20 text-right">Price</span>
+            <span className="w-24 text-center text-[9px] font-black uppercase tracking-widest text-slate-400">Qty</span>
+            <span className="w-20 text-right text-[9px] font-black uppercase tracking-widest text-slate-400">Price</span>
           </div>
 
           {cartItems.map((item) => (
@@ -126,21 +126,32 @@ export default function CartPage({ onCheckout }) {
                 removingKey === `${item.id}-${item.size}` ? "opacity-0 scale-95" : "opacity-100 scale-100"
               }`}
             >
-              <div className="w-20 h-24 md:w-24 md:h-28 overflow-hidden bg-slate-50 flex-shrink-0">
+              {/* ─── ACTION: DYNAMICALLY REDIRECT VIA LOGO IMAGE ─── */}
+              <button
+                onClick={() => navigate(`/product/${item.id}`)}
+                className="group w-20 h-24 md:w-24 md:h-28 overflow-hidden bg-slate-50 flex-shrink-0 text-left outline-none"
+                title={`View ${item.name}`}
+              >
                 <img
                   src={item.images?.[0] || item.image}
                   alt={item.name}
-                  className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-500"
+                  className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
                 />
-              </div>
+              </button>
 
               <div className="flex flex-col gap-1">
                 <span className="text-[9px] font-black uppercase tracking-[0.25em] text-[#3b82f6]">
                   {item.brand}
                 </span>
-                <p className="text-sm font-black uppercase tracking-tight text-[#0b2240] leading-tight">
+                
+                {/* ─── ACTION: DYNAMICALLY REDIRECT VIA TITLE TEXT ─── */}
+                <button
+                  onClick={() => navigate(`/product/${item.id}`)}
+                  className="text-left font-black uppercase tracking-tight text-[#0b2240] leading-tight text-sm hover:text-[#ff5700] transition-colors outline-none"
+                >
                   {item.name}
-                </p>
+                </button>
+
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">
                   Size: <span className="text-[#0b2240]">{item.size}</span>
                 </p>
